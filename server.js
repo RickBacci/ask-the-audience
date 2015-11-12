@@ -1,3 +1,5 @@
+var votes = {};
+
 const http     = require('http');
 const express  = require('express');
 
@@ -27,8 +29,19 @@ io.on('connection', function(socket) {
 
   socket.on('disconnect', function() {
     console.log('A user has disconnected.', io.engine.clientsCount);
+    delete votes[socket.id];
+    console.log(votes);
+    io.sockets.emit('userConnection', io.engine.clientsCount);
   });
 
+  socket.on('message', function(channel, message) {
+    if (channel == 'voteCast') {
+      votes[socket.id] = message;
+      console.log(votes);
+    }
+  });
 });
+
+
 
 module.exports = server;
