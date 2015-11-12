@@ -20,6 +20,16 @@ for (var i = 0; i < buttons.length; i++) {
   });
 }
 
+var votingTotals = document.getElementById('voting-totals');
+var totalAvotes  = document.getElementById('total-a-votes');
+var totalBvotes  = document.getElementById('total-b-votes');
+var totalCvotes  = document.getElementById('total-c-votes');
+var totalDvotes  = document.getElementById('total-d-votes');
+
 socket.on('voteCount', function(votes) {
-  console.log(votes);
+  votingTotals.innerText = "Voting Totals";
+  totalAvotes.innerText = "A: " + votes.A;
+  totalBvotes.innerText = "B: " + votes.B;
+  totalCvotes.innerText = "C: " + votes.C;
+  totalDvotes.innerText = "D: " + votes.D;
 });
