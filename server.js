@@ -3,7 +3,6 @@ var votes = {};
 const http     = require('http');
 const express  = require('express');
 
-
 const app      = express();
 
 app.use(express.static('public'));
@@ -30,6 +29,7 @@ io.on('connection', function(socket) {
   socket.on('message', function(channel, message) {
     if (channel == 'voteCast') {
       votes[socket.id] = message;
+      socket.emit('currentVote', message);
       socket.emit('voteCount', countVotes(votes));
     }
   });

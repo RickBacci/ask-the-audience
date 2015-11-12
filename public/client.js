@@ -27,9 +27,16 @@ var totalCvotes  = document.getElementById('total-c-votes');
 var totalDvotes  = document.getElementById('total-d-votes');
 
 socket.on('voteCount', function(votes) {
-  votingTotals.innerText = "Voting Totals";
+  votingTotals.innerText = "Current Voting Totals";
   totalAvotes.innerText = "A: " + votes.A;
   totalBvotes.innerText = "B: " + votes.B;
   totalCvotes.innerText = "C: " + votes.C;
   totalDvotes.innerText = "D: " + votes.D;
+});
+
+
+var currentVote = document.getElementById('current-vote');
+
+socket.on('currentVote', function(message) {
+  currentVote.innerText = "You have voted for: " + message;
 });
