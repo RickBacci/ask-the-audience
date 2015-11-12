@@ -27,6 +27,13 @@ io.on('connection', function(socket) {
 
   socket.emit('statusMessage', 'You have connected.');
 
+  socket.on('message', function(channel, message) {
+    if (channel == 'voteCast') {
+      votes[socket.id] = message;
+      socket.emit('voteCount', countVotes(votes));
+    }
+  });
+
   socket.on('disconnect', function() {
     console.log('A user has disconnected.', io.engine.clientsCount);
     delete votes[socket.id];
@@ -34,12 +41,14 @@ io.on('connection', function(socket) {
     io.sockets.emit('userConnection', io.engine.clientsCount);
   });
 
-  socket.on('message', function(channel, message) {
-    if (channel == 'voteCast') {
-      votes[socket.id] = message;
-      console.log(votes);
+  function countVotes(votes) {
+    var voteCount = { A: 0, B: 0, C: 0, D: 0 };
+
+    for (vote in votes) {
+      voteCount[votes[vote]] ++
     }
-  });
+    return voteCount;
+  }
 });
 
 
